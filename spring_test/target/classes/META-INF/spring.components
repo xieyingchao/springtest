@@ -1,0 +1,4 @@
+#
+#Sat Jul 27 17:02:49 CST 2019
+com.xyc.factory_bean.MyAspect=org.springframework.stereotype.Component
+com.xyc.factory_bean.UserServiceImpl=org.springframework.stereotype.Component

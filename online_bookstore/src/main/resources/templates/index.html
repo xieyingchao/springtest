@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/bootstrap337/css/zui.min.css">
+    <script src="/bootstrap337/js/jquery-3.4.1.min.js"></script>
+    <script src="/bootstrap337/js/zui.min.js"></script>
+</head>
+<body>
+    <div>
+        <nav class="navbar navbar-inverse" role="navigation">
+            <ul  class="nav navbar-nav">
+                <li class="actives" style="margin-left: 20px"><a id="bookManger">图书管理</a></li>
+                <li style="margin-left: 20px"><a id="bookInsert">添加图书</a></li>
+                <li style="margin-left: 20px"><a id="borderManger">订单管理</a></li>
+                <li style="margin-left: 20px"><a id="userManger">用户管理</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div style="margin: 100px;margin-top: 10px" class="hidden" id="table">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>书编号</th>
+                <th>书名</th>
+                <th>价格</th>
+                <th>作者</th>
+                <th>出版社</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
+    <div style="margin: 100px;margin-top: 10px;width: 400px;" class="hidden" id="form">
+        <form>
+            <ul>
+                <li style="margin-top: 10px;list-style-type: none"><input type="number" class="form-control" placeholder="书号" id="bid"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="text" class="form-control" placeholder="书名" id="bname"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="number" class="form-control" placeholder="价格" id="price"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="text" class="form-control" placeholder="作者" id="author"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="text" class="form-control" placeholder="出版社" id="press"></li>
+                <li style="margin-top: 10px;list-style-type: none">
+                    <input class='btn btn-primary' type="button" value="提交" id="submitBTN">
+                    <input class='btn btn-danger' type="reset" value="重置">
+                </li>
+            </ul>
+        </form>
+    </div>
+    <div style="margin: 100px;margin-top: 10px;width: 400px;" class="hidden" id="form2">
+        <form>
+            <ul>
+                <li style="margin-top: 10px;list-style-type: none"><input type="number" class="form-control" placeholder="书号" id="bid2"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="text" class="form-control" placeholder="书名" id="bname2"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="number" class="form-control" placeholder="价格" id="price2"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="text" class="form-control" placeholder="作者" id="author2"></li>
+                <li style="margin-top: 10px;list-style-type: none"><input type="text" class="form-control" placeholder="出版社" id="press2"></li>
+                <li style="margin-top: 10px;list-style-type: none">
+                    <input class='btn btn-primary' type="button" value="提交" id="submitBTN2">
+                    <input class='btn btn-danger' type="reset" value="重置">
+                </li>
+            </ul>
+        </form>
+    </div>
+    <div style="margin: 100px;margin-top: 10px" class="hidden" id="table2">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <th>客户号</th>
+                <th>下单时间</th>
+                <th>状态</th>
+                <th>收货人</th>
+                <th>收货地址</th>
+                <th>电话</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody2">
+            </tbody>
+        </table>
+    </div>
+    <div style="margin: 100px;margin-top: 10px" class="hidden" id="table3">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>客户号</th>
+                <th>客户名</th>
+                <th>电话</th>
+                <th>地址</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody3">
+            </tbody>
+        </table>
+    </div>
+</body>
+<script>
+    $(function () {
+        $("#bookManger").click(function () {
+            //alert("点击");
+            $("#tbody").children().remove();
+            $.ajax({
+                url:"/getAll",
+                type:"get",
+                datatype:"json",
+                success:function (data) {
+                    //alert(data);
+                    for (var i = 0; i < data.length; i++) {
+                        $("#tbody").append("<tr>\n" +
+                            "<td>"+ data[i].bid +"</td>\n" +
+                            "<td>"+data[i].bname+"</td>\n" +
+                            "<td>"+data[i].price+"</td>\n" +
+                            "<td>"+data[i].author+"</td>\n" +
+                            "<td>"+data[i].press+"</td>\n" +
+                            "<td>" +
+                                "<button class='btn btn-primary btn-change' type='button' style='margin-left: 8px;margin-right: 8px'>修改</button>" +
+                                "<button class='btn btn-danger btn-delete' value='"+data[i].bid+"' type='button'>删除</button>" +
+                            "</td>\n" +
+                            "</tr>");
+                    }
+                    console.log(data);
+                    $("#table").removeClass("hidden");
+                    $("#form").addClass("hidden");
+                    $("#form2").addClass("hidden");
+                    $("#table2").addClass("hidden");
+                    $("#table3").addClass("hidden");
+                    $(".btn-delete").click(function () {
+                        //alert("删除");
+                        //alert($(this).val());
+                        $.ajax({
+                            url:"/delete",
+                            type:"get",
+                            context:$(this)[0],
+                            data:"id="+$(this).val(),
+                            success:function (data) {
+                                console.log($(this));
+                                if(data){
+                                    alert("success");
+                                    $(this).parents("tr").remove();
+                                }else{
+                                    alert("fail");
+                                }
+                            }
+                        });
+                    });
+                    $(".btn-change").click(function () {
+                        $("#table").addClass("hidden");
+                        $("#form2").removeClass("hidden");
+                        var tr = $(this).parents("tr");
+                        var book = ['bid2','bname2','price2','author2','press2'];
+                        for (var i = 0; i < 5; i++) {
+                            var td = tr.children()[i];
+                            var text = $(td).text();
+                            document.getElementById(book[i]).value = text;
+                        }
+                        $("#bid2").attr("disabled","disabled");
+
+                    });
+
+                }
+
+            });
+        });
+
+
+        $("#bookInsert").click(function () {
+           $("#table").addClass("hidden");
+           $("#form").removeClass("hidden");
+           $("#form2").addClass("hidden");
+           $("#table2").addClass("hidden");
+           $("#table3").addClass("hidden");
+        });
+
+        $("#submitBTN").click(function () {
+            var data = {"bid":$("#bid").val()
+                ,"bname":$("#bname").val()
+                ,"price":$("#price").val()
+                ,"author":$("#author").val()
+                ,"press":$("#press").val()}
+            $.ajax({
+                url:"/insertBook",
+                type:"POST",
+                data:JSON.stringify(data),
+                contentType:"application/json",
+                success:function (data) {
+                    if(data){
+                        alert("插入成功");
+                    }else{
+                        alert("插入失败");
+                    }
+                }
+            });
+        });
+
+        $("#submitBTN2").click(function () {
+            var data = {"bid":$("#bid2").val()
+                ,"bname":$("#bname2").val()
+                ,"price":$("#price2").val()
+                ,"author":$("#author2").val()
+                ,"press":$("#press2").val()}
+            console.log(data);
+            $.ajax({
+                url:"/updataBook",
+                type:"POST",
+                data:JSON.stringify(data),
+                contentType:"application/json",
+                success:function (data) {
+                    if(data){
+                        alert("修改成功");
+                    }else{
+                        alert("修改失败");
+                    }
+                }
+            });
+        });
+
+        $("#borderManger").click(function () {
+            $("#tbody2").children().remove();
+            $.ajax({
+                url:"/getBorder",
+                type:"get",
+                datatype:"json",
+                success:function (data) {
+                    if (null != data){
+                        for (var i = 0; i < data.length; i++) {
+                            var phone = (data[i].phone == null?'/':data[i].phone);
+
+                            var check="",check2="";
+                            if(data[i].ostate == "未处理"){check = "checked";}
+                            else{check2 = "checked";}
+                            var checkbox = "<input type='radio' value='未处理' name='radioOptionsExample"+i+"' class='ostate' "+check+">未处理  "+
+                                            "<input type='radio' value='已处理' name='radioOptionsExample"+i+"' class='ostate' "+check2+">已处理";
+
+                            $("#tbody2").append("<tr>\n" +
+                                "<td>"+ data[i].oid +"</td>\n" +
+                                "<td>"+data[i].cid+"</td>\n" +
+                                "<td>"+data[i].otime.substring(0,16)+"</td>\n" +
+                                "<td>"+checkbox+"</td>\n" +
+                                "<td>"+data[i].receptor+"</td>\n" +
+                                "<td>"+data[i].address+"</td>\n" +
+                                "<td>"+ phone +"</td>\n" +
+                                "<td>" +
+                                "<button class='btn btn-primary btn-change2' type='button' style='margin-left: 8px;margin-right: 8px'>修改</button>" +
+                                "<button class='btn btn-danger btn-delete2' value='"+data[i].oid+"' type='button'>删除</button>" +
+                                "</td>\n" +
+                                "</tr>");
+
+                        }
+                        $("#table2").removeClass("hidden");
+                        $("#form").addClass("hidden")
+                        $("#form2").addClass("hidden")
+                        $("#table").addClass("hidden");
+                        $("#table3").addClass("hidden");
+                        $(".btn-delete2").click(function () {
+                            //alert("删除");
+                            //alert($(this).val());
+
+                            $.ajax({
+                                url:"/deleteBorder",
+                                type:"get",
+                                context:$(this)[0],
+                                data:"id="+$(this).val(),
+                                success:function (data) {
+                                    console.log($(this));
+                                    if(data){
+                                        alert("success");
+                                        $(this).parents("tr").remove();
+                                    }else{
+                                        alert("fail");
+                                    }
+                                }
+                            });
+                        });
+                        $(".ostate").change(function () {
+
+                            var tr = $(this).parents("tr");
+                            var oid = $(tr.children()[0]).text();
+                            var data = {"oid":oid,"state":$(this).val()}
+                            $.ajax({
+                                url:"/updataBorderState",
+                                type:"post",
+                                data:JSON.stringify(data),
+                                contentType:"application/json",
+                                success:function (data) {
+                                    if (data){
+                                        alert("成功");
+                                    } else{
+                                        alert("失败");
+                                    }
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        });
+
+        $("#userManger").click(function () {
+            $("#tbody3").children().remove();
+            $.ajax({
+                url:"/getAllUser",
+                type:"get",
+                datatype:"json",
+                success:function (data) {
+                    console.log(data);
+                    if(null != data){
+                        for (var i = 0; i < data.length; i++) {
+                            $("#tbody3").append("<tr>\n" +
+                                "<td>"+ data[i].cid +"</td>\n" +
+                                "<td>"+data[i].cname+"</td>\n" +
+                                "<td>"+data[i].phone+"</td>\n" +
+                                "<td>"+data[i].address+"</td>\n" +
+                                "<td>" +
+                                "<button class='btn btn-primary btn-change3' type='button' style='margin-left: 8px;margin-right: 8px'>修改</button>" +
+                                "<button class='btn btn-danger btn-delete3' value='"+data[i].cid+"' type='button'>删除</button>" +
+                                "</td>\n" +
+                                "</tr>");
+                        }
+                        $("#table3").removeClass("hidden");
+                        $("#form").addClass("hidden")
+                        $("#form2").addClass("hidden")
+                        $("#table").addClass("hidden");
+                        $("#table2").addClass("hidden");
+
+                        $(".btn-delete3").click(function () {
+                            $.ajax({
+                                url:"/deleteUserById",
+                                type:"get",
+                                data:"cid="+$(this).val(),
+                                context:$(this).parents("tr"),
+                                success:function (data) {
+                                    if(null != data){
+                                        if(data){
+                                            alert("成功");
+                                            $(this).remove();
+                                        }else{
+                                            alert("失败");
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+</html>

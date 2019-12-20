@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/context
+                           https://www.springframework.org/schema/context/spring-context.xsd">
+<!--
+    xml配置法
+-->
+<!--&lt;!&ndash;    创建目标类&ndash;&gt;-->
+<!--    <bean id="userservice" class="com.xyc.factory_bean.UserServiceImpl"></bean>-->
+<!--&lt;!&ndash;    创建切面类&ndash;&gt;-->
+<!--    <bean id="myaspect" class="com.xyc.factory_bean.MyAspect"></bean>-->
+
+<!--&lt;!&ndash;    创建代理类&ndash;&gt;-->
+<!--&lt;!&ndash;    <bean id="proxyService" class="org.springframework.aop.framework.ProxyFactoryBean">&ndash;&gt;-->
+<!--&lt;!&ndash;        <property name="interfaces" value="com.xyc.factory_bean.UserService"></property>&ndash;&gt;-->
+<!--&lt;!&ndash;        <property name="interceptorNames" value="myaspect"></property>&ndash;&gt;-->
+<!--&lt;!&ndash;        <property name="target" ref="userservice"></property>&ndash;&gt;-->
+<!--&lt;!&ndash;    </bean>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    aop编程 全自动&ndash;&gt;-->
+<!--&lt;!&ndash;    <aop:config>&ndash;&gt;-->
+<!--&lt;!&ndash;        <aop:pointcut id="MyPointCut" expression="execution(* com.xyc.factory_bean.*.*(..))"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <aop:advisor advice-ref="myaspect" pointcut-ref="MyPointCut"></aop:advisor>&ndash;&gt;-->
+<!--&lt;!&ndash;    </aop:config>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    aop编程 采用aspect&ndash;&gt;-->
+<!--    <aop:config>-->
+<!--        <aop:aspect ref="myaspect">-->
+<!--            &lt;!&ndash; 创建切入点 &ndash;&gt;-->
+<!--            <aop:pointcut id="MyPointCut" expression="execution(* com.xyc.factory_bean.*.*(..))"/>-->
+<!--            &lt;!&ndash; 前置通知 &ndash;&gt;-->
+<!--&lt;!&ndash;            <aop:before method="MyBefore" pointcut-ref="MyPointCut"></aop:before>&ndash;&gt;-->
+<!--            &lt;!&ndash; 后置通知 &ndash;&gt;-->
+<!--&lt;!&ndash;            <aop:after-returning method="MyAfterReturning" pointcut-ref="MyPointCut" returning="ret"></aop:after-returning>&ndash;&gt;-->
+<!--            &lt;!&ndash; 环绕通知 &ndash;&gt;-->
+<!--            <aop:around method="MyAround" pointcut-ref="MyPointCut"></aop:around>-->
+<!--            &lt;!&ndash; 抛出异常通知 &ndash;&gt;-->
+<!--            <aop:after-throwing method="MyAfterThrowing" pointcut-ref="MyPointCut" throwing="throwable"></aop:after-throwing>-->
+<!--            &lt;!&ndash; 最终通知 &ndash;&gt;-->
+<!--            <aop:after method="MyAfter" pointcut-ref="MyPointCut"></aop:after>-->
+<!--        </aop:aspect>-->
+<!--    </aop:config>-->
+
+<!--    注解配置法-->
+    <context:component-scan base-package="com.xyc.factory_bean"></context:component-scan>
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+</beans>

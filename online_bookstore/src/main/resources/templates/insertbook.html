@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/bootstrap337/js/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <form action="/insertBook" method="post">
+        <ul>
+            <li>
+                <input name="bid" type="text" id="bid">
+            </li>
+            <li>
+                <input name="bname" type="text" id="bname">
+            </li>
+            <li>
+                <input name="price" type="number" id="price">
+            </li>
+            <li>
+                <input name="author" type="text" id="author">
+            </li>
+            <li>
+                <input name="press" type="text" id="press">
+            </li>
+            <li>
+                <input type="button" value="提交" id="btn">
+            </li>
+        </ul>
+    </form>
+</body>
+
+<script>
+    $(function () {
+        $("#btn").click(function () {
+            var data = {"bid":$("#bid").val()
+                        ,"bname":$("#bname").val()
+                        ,"price":$("#price").val()
+                        ,"author":$("#author").val()
+                        ,"press":$("#press").val()}
+            $.ajax({
+                url:"/changeBook",
+                type:"POST",
+                data:JSON.stringify(data),
+                contentType:"application/json",
+                success:function (data) {
+                    alert(data);
+                }
+            });
+        });
+    });
+</script>
+</html>
